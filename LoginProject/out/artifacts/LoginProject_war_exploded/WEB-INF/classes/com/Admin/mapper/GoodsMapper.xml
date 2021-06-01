@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Admin.mapper.GoodsMapper">
+    <!--
+    insert：   插入n条记录，返回影响行数n。（n>=1，n为0时实际为插入失败）
+
+    update：更新n条记录，返回影响行数n。（n>=0）
+
+    delete： 删除n条记录，返回影响行数n。（n>=0）
+    -->
+    <!--商品管理-->
+    <select id="queryGoods" resultType="com.Admin.GoodsManage.entity.Goods">
+        select * from goods
+    </select>
+    <!--删除对应id的商品-->
+    <delete id="deleteGoods" parameterType="Integer" >
+        delete from goods where goods_id = #{goods_id}
+    </delete>
+
+    <update id="AddGoods" >
+        update goods
+        set goods_num = goods_num + #{goods_num} /* goods_num的值 = goods_num原来的值+要更新的差距值*/
+        where goods_name = #{goods_name}
+    </update>
+    <insert id="InsertGoods">
+        insert into goods (goods_name,goods_type,goods_num,goods_price,goods_bzq,goods_source,goods_producer)
+        value (#{lib.goods_name},#{lib.goods_type},#{goods_num},#{lib.goods_price},#{lib.goods_bzq},#{lib.goods_source},#{lib.goods_producer})
+    </insert>
+
+    <update id="updateGoodsNum">
+        update goods
+        set goods_num = goods_num - #{number}
+        where goods_id = #{goods_id}
+    </update>
+</mapper>

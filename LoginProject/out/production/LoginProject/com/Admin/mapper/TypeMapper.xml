@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Admin.mapper.TypeMapper">
+    <!--类目管理-->
+    <select id="queryType" resultType="com.Admin.TypeManage.entity.Type">
+        select * from type
+    </select>
+    <delete id="deleteType" parameterType="Integer">
+        delete from type where type_id = #{type_id}
+    </delete>
+    <select id="queryGoodsType" parameterType="String" resultType="com.Admin.GoodsManage.entity.Goods">
+        select * from goods where goods_type=#{goods_type}
+    </select>
+
+    <insert id="addType" parameterType="String">
+        insert into `type` (type_name) value (#{goods_type}) /*需要有括号*/
+    </insert>
+
+    <select id="QueryType" parameterType="String" resultType="com.Admin.TypeManage.entity.Type">
+        select * from `type` where type_name = #{type}
+    </select>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 首先解析 namespace 命名空间，此属性通常用来映射Dao(Mapper)层接口-->
+<mapper namespace="com.login_register.mapper.UserMapper">
+<!--    id:对应Dao层接口方法名 parameterType：制定输入参数类型-->
+<!--    useGeneratedKeys=“true” 把新增加的主键赋值到定义的keyProperty（id）中-->
+    <!--查找客户用户名-->
+    <select id="queryUserByName" parameterType="String" resultType="com.login_register.entity.User">
+        select * from user where user_name = #{user_name}
+    </select>
+    <!--客户注册成功，添加客户-->
+    <insert id="insertUser" parameterType="com.login_register.entity.User">
+        insert into user (user_name,user_pwd,user_surplus) values (#{user_name},#{user_pwd},0)
+    </insert>
+    <select id="queryUserManageByName" parameterType="String" resultType="com.login_register.entity.Admin">
+        select * from admin where user_name = #{user_name}
+    </select>
+    <insert id="insertUserManage" parameterType="com.login_register.entity.Admin">
+        insert into admin (user_name,user_pwd) values (#{user_name},#{user_pwd})
+    </insert>
+
+</mapper>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.Admin.mapper.OrderMapper">
+    <!--订单管理-->
+    <select id="queryOrder" resultType="com.Admin.OrderManage.entity.Order">
+        select
+        order.order_id,
+        goods.goods_name,
+        goods.goods_type,
+        order.number,
+        order.total,
+        user.real_name,
+        user.user_tel,
+        user.user_address,
+        order.state
+        from `order` inner join goods inner join `user`
+        on order.goods_id=goods.goods_id
+        and order.user_id=user.id; /*存order对象*/
+    </select>
+
+    <update id="updateOrder" parameterType="Integer">
+        update `order`
+        set `state` = 1
+        where order_id = #{order_id}
+    </update>
+
+    <update id="returnOrder" parameterType="Integer">
+        update `order`
+        set `state` = 3
+        where order_id = #{id}
+    </update>
+
+    <update id="finishReturnOrder" parameterType="Integer">
+        update `return_goods`
+        set `state` = 2
+        where id = #{id}
+    </update>
+
+    <update id="finishOrder" parameterType="Integer">
+        update `order`
+        set `state` = 2
+        where order_id = #{order_id}
+    </update>
+
+    <insert id="insertOrder">
+        insert into `order`
+        (goods_id,user_id,`number`,total)
+        value (#{goods_id},#{user_id},#{number},#{total})
+    </insert>
+
+    <select id="queryUserOrder" parameterType="String" resultType="com.Admin.OrderManage.entity.Order">
+        select
+        order.order_id,
+        goods.goods_name,
+        goods.goods_type,
+        order.number,
+        order.total,
+        user.real_name,
+        user.user_tel,
+        user.user_address,
+        order.state
+        from `order` inner join goods inner join `user`
+        on order.goods_id=goods.goods_id
+        and order.user_id=user.id
+        and user.user_name = #{user_name}/*存order对象*/
+    </select>
+
+    <select id="queryReturnGoods" parameterType="Integer" resultType="com.Admin.UserManage.entity.ReturnGoods">
+        select
+        return_goods.id,
+        `order`.order_id,
+        goods.goods_name,
+        goods.goods_type,
+        `order`.number,
+        `order`.total,
+        `user`.real_name,
+        `user`.user_tel,
+        `user`.user_address,
+        return_goods.state
+        from return_goods inner join `order` inner join goods inner join `user`
+        on `order`.goods_id = goods.goods_id
+        and `order`.user_id = `user`.id
+        and return_goods.order_id = `order`.order_id
+        and return_goods.goods_id = goods.goods_id
+        and return_goods.user_id = #{user_id}
+    </select>
+
+    <insert id="insertReturnOrder">
+        insert into return_goods
+        (order_id,goods_id,user_id,`state`)
+        value (#{order_id},#{goods_id},#{user_id},3)
+    </insert>
+
+    <select id="QueryReturnGoods" resultType="com.Admin.UserManage.entity.ReturnGoods">
+        select
+        return_goods.id,
+        `order`.order_id,
+        goods.goods_name,
+        goods.goods_type,
+        `order`.number,
+        `order`.total,
+        `user`.real_name,
+        `user`.user_tel,
+        `user`.user_address,
+        return_goods.state,
+        `user`.user_name
+        from return_goods inner join `order` inner join goods inner join `user`
+        on `order`.goods_id = goods.goods_id
+        and `order`.user_id = `user`.id
+        and return_goods.order_id = `order`.order_id
+        and return_goods.goods_id = goods.goods_id
+    </select>
+
+
+    <select id="queryOrderId" parameterType="Integer" resultType="com.Admin.OrderManage.entity.Order_id">
+        select * from `order` where order_id = #{order_id}
+    </select>
+</mapper>
